@@ -1,0 +1,52 @@
+Once the container is up and running these are the steps to import device types.
+
+Phase 1: Data Source Setup (The Library)
+This step brings the "blueprints" from GitHub into your local Postgres database.
+
+Navigate to Core > Data Sources (or use the search bar for "Data Sources").
+
+Add a New Source with these details:
+
+Name: NetBox Device Type Library
+
+Type: git
+
+Source URL: https://github.com/netbox-community/devicetype-library.git
+
+Ignore Rules: (Crucial for your 1Gb link) Add elevation-images/* and module-types/* to skip unnecessary bulk.
+
+Sync: Click the Sync button and wait for the status to turn green (Completed). This populates the DataFile table in your database.
+
+Phase 2: Script Installation (The Processor)
+This step adds the logic that reads those files and creates your inventory.
+
+Locate your NetBox Docker scripts directory (e.g., ~/homenet/netbox-docker/scripts).
+
+Create a file named import_device_types.py and paste the Python code provided earlier.
+
+Refresh the NetBox UI and navigate to Customization > Scripts. You should see the script listed.
+
+Phase 3: Execution (The Import)
+This is where the actual Manufacturers and Device Types are created.
+
+Open the Script in the NetBox UI.
+
+Configure:
+
+Vendor Filter: Enter specific vendors (e.g., apc, cisco, dell) to keep the initial run manageable.
+
+Commit Changes: Keep this unchecked for a "Dry Run" first.
+
+Run Script: Click the button and check the log output.
+
+Finalize: If the logs look good, check Commit Changes and run it again to save the devices to your database.
+
+Phase 4: Maintenance (The Lifecycle)
+Because this is a "local-first" setup, keeping it updated is simple:
+
+Update Library: Click Sync on the Data Source. NetBox will only pull the new/changed YAML files.
+
+Re-run Script: Run the Custom Script again. It will skip everything that already exists and only add the new models.
+
+
+

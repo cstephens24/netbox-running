@@ -1,0 +1,7 @@
+sudo docker run --rm -e "NETBOX_URL=http://10.0.1.63:8000/" -e "NETBOX_TOKEN=Bearer nbt_NMINnLs8GQXE.KJnLBxTk4aMkdMd9urrxqfT0OW4tkHaO8ibRkL95" -e "VENDORS=apc,cisco,dell,mikrotik,intel" ghcr.io/minitriga/netbox-device-type-library-import
+
+sudo docker run -e "NETBOX_URL=http://10.0.1.63:8000/" -e "NETBOX_TOKEN=Bearer nbt_NMINnLs8GQXE.KJnLBxTk4aMkdMd9urrxqfT0OW4tkHaO8ibRkL95" \
+ ghcr.io/minitriga/netbox-device-type-library-import
+
+
+Bearer nbt_NMINnLs8GQXE.KJnLBxTk4aMkdMd9urrxqfT0OW4tkHaO8ibRkL95

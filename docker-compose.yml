@@ -2,7 +2,6 @@ services:
   netbox: &netbox
     image: docker.io/netboxcommunity/netbox:${VERSION-v4.6-5.0.0}
     depends_on:
-      - postgres
       - redis
       - redis-cache
     env_file: env/netbox.env
@@ -32,19 +31,6 @@ services:
       timeout: 3s
       interval: 15s
 
-  # postgres
-  postgres:
-    image: docker.io/postgres:18-alpine
-    healthcheck:
-      test: pg_isready -q -t 2 -d $$POSTGRES_DB -U $$POSTGRES_USER
-      start_period: 20s
-      timeout: 30s
-      interval: 10s
-      retries: 5
-    env_file: env/postgres.env
-    volumes:
-      - netbox-postgres:/var/lib/postgresql
-
   # redis
   redis:
     image: docker.io/valkey/valkey:9.0-alpine
@@ -72,16 +58,40 @@ services:
     volumes:
       - netbox-redis-cache-data:/data
 
+# volumes:
+#   netbox-media-files:
+#     driver: local
+#   netbox-redis-cache-data:
+#     driver: local
+#   netbox-redis-data:
+#     driver: local
+#   netbox-reports-files:
+#     driver: local
+#   netbox-scripts-files:
+#     driver: local
+
 volumes:
-  netbox-media-files:
-    driver: local
-  netbox-postgres:
-    driver: local
   netbox-redis-cache-data:
     driver: local
   netbox-redis-data:
     driver: local
-  netbox-reports-files:
+  netbox-media-files:
     driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=10.0.0.30,nolock,soft,nfsvers=4"
+      device: ":/mnt/FastSSD/TinyProx/netbox-data/media"
+
   netbox-scripts-files:
     driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=10.0.0.30,nolock,soft,nfsvers=4"
+      device: ":/mnt/FastSSD/TinyProx/netbox-data/scripts"
+
+  netbox-reports-files:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=10.0.0.30,nolock,soft,nfsvers=4"
+      device: ":/mnt/FastSSD/TinyProx/netbox-data/reports"

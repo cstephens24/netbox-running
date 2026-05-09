@@ -1,0 +1,37 @@
+For generating the database first
+https://netboxlabs.com/docs/netbox/installation/postgresql/
+
+Docker Wiki for netbox
+https://github.com/netbox-community/netbox-docker/wiki/
+
+Repos
+https://github.com/netbox-community/netbox-docker
+https://github.com/netbox-community/devicetype-library
+
+Changes to make for production
+Secrets
+Please change the following settings to keep your setup safe.
+
+SUPERUSER_PASSWORD, see also the next section.
+SUPERUSER_API_TOKEN, see also the next section.
+DB_PASSWORD and POSTGRES_PASSWORD
+SECRET_KEY
+EMAIL_PASSWORD, see also the next section.
+NAPALM_PASSWORD
+REDIS_PASSWORD
+REDIS_CACHE_PASSWORD
+AUTH_LDAP_BIND_PASSWORD
+API_TOKEN_PEPPER_1
+Generate Secret Key
+docker compose run netbox python3 /opt/netbox/netbox/generate_secret_key.py
+Operations
+These settings are also relevant:
+
+ALLOWED_HOSTS: Add all FQDNs and IP addresses that lead to your Netbox instance, space separated. E.g. ALLOWED_HOSTS=netbox.mycorp.com server042.mycorp.com 2a02:123::42 10.0.0.42 localhost ::1 127.0.0.1 (It's good advice to always allow localhost connections for easy debugging, i.e. localhost ::1 127.0.0.1.)
+DB_*: Use your own persistent database. Don't use the default passwords!
+EMAIL_*: Use your own mailserver.
+MAX_PAGE_SIZE: Use the recommended default of 1000.
+SUPERUSER_*: Only define those variables during the initial setup, and drop them once the DB is set up. Don't use the default passwords!
+SKIP_SUPERUSER: Set to true after you've created the superuser.
+REDIS_*: Use your own persistent redis. Don't use the default passwords!
+CORS_ORIGIN_ALLOW_ALL: Set this to false or configure it using CORS_ORIGIN_WHITELIST or CORS_ORIGIN_REGEX_WHITELIST
