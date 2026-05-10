@@ -1,1 +1,2 @@
 netbox-topology-views
+netboxlabs-diode-netbox-plugin

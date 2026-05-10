@@ -1,5 +1,6 @@
 PLUGINS = [
     'netbox_topology_views',
+    'netbox_diode_plugin',
 ]
 
 PLUGINS_CONFIG = {
